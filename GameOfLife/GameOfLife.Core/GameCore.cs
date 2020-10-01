@@ -2,9 +2,9 @@
 
 namespace GameOfLife.Core
 {
-    public class gameCore
+    public class GameCore
     {
-        public void gameStart()
+        public void GameStart()
         {
             Console.WriteLine("It's alive!");
         }

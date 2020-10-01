@@ -6,8 +6,8 @@ namespace GameOfLife.Core
     {
         static void Main(string[] args)
         {
-            var game = new gameCore();
-            game.gameStart();
+            var game = new GameCore();
+            game.GameStart();
         }
     }
 }
