@@ -11,7 +11,7 @@ namespace GameOfLife.Core
 
         public void StartGame()
         {
-            int timer = 100;
+            var timer = 100;
             this.FillTheBoard();
             do
             {
@@ -21,7 +21,7 @@ namespace GameOfLife.Core
             } while (timer != 0);
         }
 
-        public void FillTheBoard()
+        private void FillTheBoard()
         {
             cells.Add(new Cell(2, 2));
             cells.Add(new Cell(2, 3));
@@ -31,28 +31,32 @@ namespace GameOfLife.Core
             cells.Add(new Cell(3, 5));
         }
 
-        public void Advance()
+        private void Advance()
         {
-            foreach (Cell e in cells)
+            cells.ForEach(delegate(Cell cell)
             {
-                if (CountNeighbours(e) != 2 && CountNeighbours(e) != 3)
+                if (CountNeighbours(cell) == 2 || CountNeighbours(cell) == 3)
                 {
-                    cells.Remove(e);
-                    e.Kill();
+                    //literally nothing
                 }
-            }
+                else
+                {
+                    cells.Remove(cell);
+                    cell.Kill();
+                }
+            });
         }
 
         private int CountNeighbours(Cell e)
         {
-            int counter = 0;
-            foreach (Cell cell in cells)
+            var counter = 0;
+            cells.ForEach(delegate(Cell cell)
             {
                 if (cell.IsNeighbour(e))
                 {
                     counter++;
                 }
-            }
+            });
 
             return counter;
         }
