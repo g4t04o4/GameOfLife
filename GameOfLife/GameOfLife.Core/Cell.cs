@@ -11,12 +11,17 @@ namespace GameOfLife.Core
         {
             x = xInput;
             y = yInput;
-            isAlive = true;
+            isAlive = false;
         }
 
         public void Kill()
         {
             this.isAlive = false;
+        }
+
+        public void Create()
+        {
+            this.isAlive = true;
         }
 
         public int GetX()
@@ -29,14 +34,9 @@ namespace GameOfLife.Core
             return this.y;
         }
 
-        public bool IsNeighbour(Cell e)
+        public bool IsAlive()
         {
-            if (Math.Abs(this.x - e.x) <= 1 & Math.Abs(this.y - e.y) <= 1)
-            {
-                return true;
-            }
-
-            return false;
+            return isAlive;
         }
     }
 }

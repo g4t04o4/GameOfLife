@@ -18,17 +18,26 @@ namespace GameOfLife.Core
                 this.Advance();
                 timer--;
                 System.Threading.Thread.Sleep(1000);
+                Console.WriteLine(timer);
             } while (timer != 0);
         }
 
         private void FillTheBoard()
         {
-            cells.Add(new Cell(2, 2));
-            cells.Add(new Cell(2, 3));
-            cells.Add(new Cell(2, 4));
-            cells.Add(new Cell(3, 3));
-            cells.Add(new Cell(3, 4));
-            cells.Add(new Cell(3, 5));
+            for (int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    cells.Add(new Cell(i, j));
+                }
+            }
+
+            cells.Find(e => e.GetX() == 3 && e.GetY() == 3).Create();
+            cells.Find(e => e.GetX() == 3 && e.GetY() == 4).Create();
+            cells.Find(e => e.GetX() == 3 && e.GetY() == 5).Create();
+            cells.Find(e => e.GetX() == 4 && e.GetY() == 4).Create();
+            cells.Find(e => e.GetX() == 4 && e.GetY() == 5).Create();
+            cells.Find(e => e.GetX() == 4 && e.GetY() == 6).Create();
         }
 
         private void Advance()
@@ -37,11 +46,10 @@ namespace GameOfLife.Core
             {
                 if (CountNeighbours(cell) == 2 || CountNeighbours(cell) == 3)
                 {
-                    //literally nothing
+                    cell.Create();
                 }
                 else
                 {
-                    cells.Remove(cell);
                     cell.Kill();
                 }
             });
@@ -49,26 +57,9 @@ namespace GameOfLife.Core
 
         private int CountNeighbours(Cell e)
         {
-            var counter = 0;
-            cells.ForEach(delegate(Cell cell)
-            {
-                if (cell.IsNeighbour(e))
-                {
-                    counter++;
-                }
-            });
-
+            int counter = cells.FindAll(c =>
+                Math.Abs(c.GetX() - e.GetX()) <= 1 && Math.Abs(c.GetY() - e.GetY()) <= 1 && c.IsAlive()).Count;
             return counter;
-        }
-
-        private bool isExist(int x, int y)
-        {
-            if (cells.Exists(e => e.GetX() == x & e.GetY() == y))
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }
