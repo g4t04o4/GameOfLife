@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
+using System.Drawing.Bitmap;
 
-namespace GameOfLife.Core
+namespace GameOfLife.UI
 {
     using System;
-    using GameOfLife.UI;
 
     internal class Board
     {
@@ -32,21 +32,6 @@ namespace GameOfLife.Core
             }
 
             _lastGen = _board;
-        }
-
-        public void DrawBoard()
-        {
-            for (var i = 0; i < Size; i++)
-            {
-                for (var j = 0; j < Size; j++)
-                {
-                    Console.Write(_board[i, j] ? 'x' : ' ');
-                }
-
-                Console.WriteLine();
-            }
-
-            Console.WriteLine();
         }
 
         public void Advance()
@@ -121,5 +106,18 @@ namespace GameOfLife.Core
 
             return counter;
         }
+
+        // private static Bitmap ToBitmap(bool[,] board)
+        // {
+        //     Bitmap Image = new Bitmap(Size, Size);
+        //
+        //     for (var i = 0; i < Size; i++)
+        //     {
+        //         for (var j = 0; j < Size; j++)
+        //         {
+        //             //Create a Bitmap from the board.
+        //         }
+        //     }
+        // }
     }
 }
