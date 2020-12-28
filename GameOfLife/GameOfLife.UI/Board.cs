@@ -1,5 +1,7 @@
-﻿using System.Linq.Expressions;
-using System.Drawing.Bitmap;
+﻿using System.Drawing;
+using System.Linq.Expressions;
+using System.Windows.Media.Imaging;
+using System.Drawing.Drawing2D;
 
 namespace GameOfLife.UI
 {
@@ -107,17 +109,18 @@ namespace GameOfLife.UI
             return counter;
         }
 
-        // private static Bitmap ToBitmap(bool[,] board)
-        // {
-        //     Bitmap Image = new Bitmap(Size, Size);
-        //
-        //     for (var i = 0; i < Size; i++)
-        //     {
-        //         for (var j = 0; j < Size; j++)
-        //         {
-        //             //Create a Bitmap from the board.
-        //         }
-        //     }
-        // }
+
+        public static Bitmap ToBitmap(bool[,] board)
+        {
+            var image = new Bitmap(Size, Size);
+
+            for (var i = 0; i < Size; i++)
+            {
+                for (var j = 0; j < Size; j++)
+                {
+                    //Create a Bitmap from the board.
+                }
+            }
+        }
     }
 }
