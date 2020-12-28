@@ -3,62 +3,122 @@
 namespace GameOfLife.Core
 {
     using System;
-    using System.Collections.Generic;
+    using GameOfLife.UI;
 
-    public class Board
+    internal class Board
     {
-        private List<Cell> cells = new List<Cell>();
+        private const int Size = 80;
 
-        public void StartGame()
-        {
-            var timer = 100;
-            this.FillTheBoard();
-            do
-            {
-                this.Advance();
-                timer--;
-                System.Threading.Thread.Sleep(1000);
-                Console.WriteLine(timer);
-            } while (timer != 0);
-        }
+        private readonly bool[,] _board = new bool[Size, Size];
+        private bool[,] _lastGen = new bool[Size, Size];
 
-        private void FillTheBoard()
+        public void FillBoard()
         {
-            for (int i = 0; i < 100; i++)
+            var rand = new Random();
+
+            for (var i = 0; i < Size; i++)
             {
-                for (int j = 0; j < 100; j++)
+                for (var j = 0; j < Size; j++)
                 {
-                    cells.Add(new Cell(i, j));
+                    if (rand.Next(0, 100) < 30)
+                    {
+                        _board[i, j] = true;
+                    }
+                    else
+                    {
+                        _board[i, j] = false;
+                    }
                 }
             }
 
-            cells.Find(e => e.GetX() == 3 && e.GetY() == 3).Create();
-            cells.Find(e => e.GetX() == 3 && e.GetY() == 4).Create();
-            cells.Find(e => e.GetX() == 3 && e.GetY() == 5).Create();
-            cells.Find(e => e.GetX() == 4 && e.GetY() == 4).Create();
-            cells.Find(e => e.GetX() == 4 && e.GetY() == 5).Create();
-            cells.Find(e => e.GetX() == 4 && e.GetY() == 6).Create();
+            _lastGen = _board;
         }
 
-        private void Advance()
+        public void DrawBoard()
         {
-            cells.ForEach(delegate(Cell cell)
+            for (var i = 0; i < Size; i++)
             {
-                if (CountNeighbours(cell) == 2 || CountNeighbours(cell) == 3)
+                for (var j = 0; j < Size; j++)
                 {
-                    cell.Create();
+                    Console.Write(_board[i, j] ? 'x' : ' ');
                 }
-                else
-                {
-                    cell.Kill();
-                }
-            });
+
+                Console.WriteLine();
+            }
+
+            Console.WriteLine();
         }
 
-        private int CountNeighbours(Cell e)
+        public void Advance()
         {
-            int counter = cells.FindAll(c =>
-                Math.Abs(c.GetX() - e.GetX()) <= 1 && Math.Abs(c.GetY() - e.GetY()) <= 1 && c.IsAlive()).Count;
+            for (var i = 0; i < Size; i++)
+            {
+                for (var j = 0; j < Size; j++)
+                {
+                    var lg = CountNeighbours(i, j);
+                    if (!_board[i, j] && lg == 3)
+                    {
+                        _board[i, j] = true;
+                    }
+
+                    if (_board[i, j] && (lg < 2 || lg > 3))
+                    {
+                        _board[i, j] = false;
+                    }
+                }
+            }
+        }
+
+        private int CountNeighbours(int i, int j)
+        {
+            var counter = 0;
+
+            if (i != 0)
+            {
+                if (j != 0 && _lastGen[i - 1, j - 1])
+                {
+                    counter++;
+                }
+
+                if (_lastGen[i - 1, j])
+                {
+                    counter++;
+                }
+
+                if (j != Size - 1 && _lastGen[i - 1, j + 1])
+                {
+                    counter++;
+                }
+            }
+
+            if (i != Size - 1)
+            {
+                if (j != 0 && _lastGen[i + 1, j - 1])
+                {
+                    counter++;
+                }
+
+                if (_lastGen[i + 1, j])
+                {
+                    counter++;
+                }
+
+                if (j != Size - 1 && _lastGen[i + 1, j + 1])
+                {
+                    counter++;
+                }
+            }
+
+            if (j != 0 && _lastGen[i, j - 1])
+            {
+                counter++;
+            }
+
+            if (j != Size - 1 && _lastGen[i, j + 1])
+            {
+                counter++;
+            }
+
             return counter;
         }
     }

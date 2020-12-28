@@ -6,9 +6,17 @@
         xmlns:local="clr-namespace:GameOfLife.UI"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="72">
-            Some text
-        </TextBlock>
+    <Grid Margin="10 10 10 10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="800" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="Conway's Game of Life:" FontWeight="Bold" />
+            <TextBlock Text="Well, kind of." />
+        </StackPanel>
+        <Grid Grid.Column="1" Background="#eee">
+            <Image />
+        </Grid>
     </Grid>
 </Window>

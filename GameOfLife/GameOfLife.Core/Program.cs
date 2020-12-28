@@ -1,13 +1,23 @@
 ﻿using System;
+using System.Threading;
 
 namespace GameOfLife.Core
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var board = new Board();
-            board.StartGame();
+
+            board.FillBoard();
+            board.DrawBoard();
+
+            while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Spacebar))
+            {
+                board.Advance();
+                board.DrawBoard();
+                Thread.Sleep(100);
+            }
         }
     }
 }
